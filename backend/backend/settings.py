@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qx$yqn7^xsb)29&@x_l-($#cbx+8(-ke++ld*1#5m7-4zr_c-@'
+SECRET_KEY = os.environ.get('PARCHIN_SECRET_KEY', 'fake-secret')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -74,7 +74,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "mongodb://localhost:27017")
+DATABASE_URL = os.environ.get("PARCHIN_DB_URL", "mongodb://localhost:27017")
+
 
 DATABASES = {
     'default': {
