@@ -1,6 +1,7 @@
 version: "3.7"
 services:
   backend:
+    image: ${DOCKER_IMAGES_PREFIX}/backend:${PARCHIN_VERSION}
     build: backend/
     environment:
       - PARCHIN_DB_URL=mongodb://database:27017
