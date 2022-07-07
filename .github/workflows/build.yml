@@ -15,7 +15,7 @@ jobs:
         run: |
           echo "PARCHIN_VERSION=snapshot-${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Docker Login
-        run: echo ${{ secrets.DOCKER_REGISTRY_PASS }} | docker login -u ${{ secrets.DOCKER_REGISTRY_USER }} --password-stdin registry.gitlab.com
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login -u ${{ secrets.DOCKER_REGISTRY_USER }} --password-stdin registry.gitlab.com
       - name: Build images
         run: docker-compose build --parallel
       - name: Push images to the registry
