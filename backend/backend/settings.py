@@ -30,6 +30,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+CURRENT_APPS = [
+    'main'
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,8 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'djongo',
-]
+] + CURRENT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,6 +90,19 @@ DATABASES = {
     }
 }
 
+CACHE_NAME_AUTH_CODES = 'auth-codes'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'default-in-memory-cache',
+    },
+    CACHE_NAME_AUTH_CODES: {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'auth-codes-cache',
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -106,6 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "main.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
