@@ -13,6 +13,6 @@ services:
   database:
     image: mongo:5.0.9-focal
     ports:
-      - 27017
+      - $DB_PORT_MAPPING
     volumes:
       - ./.db-data/:/data/db/
