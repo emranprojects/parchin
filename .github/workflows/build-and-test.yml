@@ -1,5 +1,5 @@
 ---
-name: Main Workflow
+name: Build and Test
 on:
   push:
     branches:
