@@ -1,14 +1,14 @@
 import logging
+import random
 
 from django.conf import settings
+from django.core.cache import caches
 from rest_framework import viewsets, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
-from django.core.cache import caches, cache
-import random
 
 from main import utils
 from main.models import User
@@ -25,23 +25,23 @@ class UserViewSet(viewsets.GenericViewSet):
         serializer = AuthCodeRequestSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         auth_code = str(random.randrange(10_000, 100_000))
-        utils.send_sms(serializer.phone_number, f"Parchin login code:\n{auth_code}")
-        caches[settings.CACHE_NAME_AUTH_CODES].set(serializer.phone_number, auth_code)
+        utils.send_sms(serializer.data['phone_number'], f"Parchin login code:\n{auth_code}")
+        caches[settings.CACHE_NAME_AUTH_CODES].set(serializer.data['phone_number'], auth_code)
         return Response(status=HTTP_202_ACCEPTED)
 
     @action(methods=['POST'], detail=False, url_path="submit-code", permission_classes=[])
     def submit_code(self, request, *args, **kwargs):
         serializer = AuthCodeSubmitMessageSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
-        received_auth_code = serializer.auth_code
-        actual_auth_code = caches[settings.CACHE_NAME_AUTH_CODES].get(serializer.phone_number)
-        logging.debug(f"Phone number ({serializer.phone_number}) auth code:"
+        received_auth_code = serializer.data['auth_code']
+        actual_auth_code = caches[settings.CACHE_NAME_AUTH_CODES].get(serializer.data['phone_number'])
+        logging.debug(f"Phone number ({serializer.data['phone_number']}) auth code:"
                       f" Received={received_auth_code} Actual={actual_auth_code}")
         if received_auth_code != actual_auth_code:
             raise ValidationError("Invalid auth code!", code=HTTP_400_BAD_REQUEST)
-        user, newly_created = User.objects.get_or_create(phone_number=serializer.phone_number)
-        token = Token.objects.get(user=user)
-        return Response({"token": token}, status=HTTP_201_CREATED if newly_created else HTTP_200_OK)
+        user, user_newly_created = User.objects.get_or_create(phone_number=serializer.data['phone_number'])
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key}, status=HTTP_201_CREATED if user_newly_created else HTTP_200_OK)
 
     @action(methods=['GET', 'PUT', 'DELETE'], detail=False, url_path="self")
     def self_user_endpoint(self, request, *args, **kwargs):

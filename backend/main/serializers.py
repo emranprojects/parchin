@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'first_name', 'last_name', 'phone_number']
 
 
-class AuthCodeSerializer(serializers.Serializer, ABC):
+class AuthCodeSerializer(serializers.Serializer):
     recaptcha = ReCaptchaV3Field(action="auth-code")
     phone_number = serializers.CharField(allow_null=False)
 
