@@ -4,7 +4,7 @@ services:
     image: ${DOCKER_IMAGES_PREFIX}/backend:${PARCHIN_VERSION}
     build: backend/
     environment:
-      - DJANGO_SETTINGS_MODULE=backend.settings-production
+      - DJANGO_SETTINGS_MODULE
       - PARCHIN_DB_URL=mongodb://database:27017
       - PARCHIN_SECRET_KEY
       - RECAPTCHA_SERVER_KEY
