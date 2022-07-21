@@ -17,15 +17,15 @@ export default function Navbar() {
     return (
         <LoginContext.Consumer>
             {loginContext =>
-                <BootstrapNavbar className="navbar ml-auto" bg="dark" expand="lg">
+                <BootstrapNavbar className="navbar ml-auto p-2" bg="dark" expand="lg">
                     <Nav className="container-fluid">
                         <Nav.Item>
-                            <BootstrapNavbar.Brand href="/" className="text-white">Parchin</BootstrapNavbar.Brand>
+                            <BootstrapNavbar.Brand href="/" className="text-white">پرچین</BootstrapNavbar.Brand>
                         </Nav.Item>
                         {loginContext.isLoggedIn ? <>
                                 <Nav.Item>
                                     <a href="/" className="btn btn-dark" onClick={() => logout(loginContext)}>
-                                        <abbr title="Logout"><FontAwesomeIcon icon={faSignOutAlt}/></abbr>
+                                        <abbr title="خروج"><FontAwesomeIcon icon={faSignOutAlt}/></abbr>
                                     </a>
                                 </Nav.Item>
                             </> :
