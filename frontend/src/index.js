@@ -1,17 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import Timeline from "./pages/Timeline";
+import Navbar from "./components/Navbar";
+import LoginContext from "./components/LoginContext";
+import utils from "./utils";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <Root/>
+    </React.StrictMode>
 );
+
+function Root() {
+    const [isLoggedIn, setIsLoggedIn] = useState(utils.isLoggedIn())
+
+    return <LoginContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
+        <Navbar/>
+        <Timeline/>
+    </LoginContext.Provider>
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
