@@ -145,3 +145,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DRF_RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SERVER_KEY', 'dummy')
 DRF_RECAPTCHA_TESTING = True
+
+KAVENEGAR_TOKEN = os.environ.get('KAVENEGAR_TOKEN', 'dummy')
+KAVENEGAR_SENDER_NUMBER = os.environ.get('KAVENEGAR_SENDER_NUMBER', 'dummy')
