@@ -25,6 +25,7 @@ SECRET_KEY = os.environ.get('PARCHIN_SECRET_KEY', 'fake-secret')
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -41,11 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 ] + CURRENT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,4 +150,4 @@ DRF_RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SERVER_KEY', 'dummy')
 DRF_RECAPTCHA_TESTING = True
 
 KAVENEGAR_TOKEN = os.environ.get('KAVENEGAR_TOKEN', 'dummy')
-KAVENEGAR_SENDER_NUMBER = os.environ.get('KAVENEGAR_SENDER_NUMBER', 'dummy')
+KAVENEGAR_TEMPLATE_NAME = os.environ.get('KAVENEGAR_TEMPLATE_NAME', 'dummy')
