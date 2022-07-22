@@ -12,14 +12,13 @@ class LoginWithSmsTest(TestCase):
                                     'recaptcha': 'test',
                                     'phone_number': '+989120001122',
                                 })
-        phone_number, sms_content = mocked_send_sms.call_args.args
-        generated_auth_code = sms_content.split("\n")[1]
+        phone_number, auth_code = mocked_send_sms.call_args.args
         self.assertEqual(resp.status_code, HTTP_202_ACCEPTED)
         resp = self.client.post("/api/users/submit-code/",
                                 data={
                                     'recaptcha': 'test',
                                     'phone_number': '+989120001122',
-                                    'auth_code': generated_auth_code,
+                                    'auth_code': auth_code,
                                 })
         self.assertEqual(resp.status_code, HTTP_201_CREATED, resp.content)
         self.assertTrue('token' in resp.data)
