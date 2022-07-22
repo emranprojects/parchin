@@ -1,0 +1,45 @@
+---
+all:
+  vars:
+    ansible_python_interpreter: auto
+    shecan_dns_1: 185.51.200.2
+    shecan_dns_2: 178.22.122.100
+    src_root_dir: ../..
+    dest_root_dir: '/home/{{ ansible_user }}/parchin/'
+    secret_key:
+    nginx_conf_path: '{{ src_root_dir }}/nginx/nginx.conf'
+    docker_hub_username: emranbm
+    docker_hub_password:
+    api_url: "https://api.myparchin.com/api"
+    docker_username:
+    docker_password:
+    proxy_server_host:
+    proxy_server_user:
+    proxy_server_pass:
+    recaptcha_server_key:
+    backup_file_remote_path: '/tmp/backup.json'
+    backup_file_local_path: './backup.json'
+    ssl_full_chain_local_path:
+    ssl_private_key_local_path:
+    ssl_certs_remote_dir: '/etc/myparchin.com/ssl-files'
+    ssl_full_chain_remote_path: '{{ ssl_certs_remote_dir }}/fullchain.pem'
+    ssl_private_key_remote_path: '{{ ssl_certs_remote_dir }}/privkey.pem'
+    parchin_version:
+    ansible_sudo_pass: '{{ sudo_pass }}'
+    ansible_become_pass: '{{ sudo_pass }}'
+    ansible_ssh_pass: '{{ sudo_pass }}'
+  children:
+    production:
+      hosts:
+        prod1:
+          ansible_host:
+          ansible_user:
+          sudo_pass:
+          ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ProxyCommand="sshpass -p {{ proxy_server_pass }} ssh -o StrictHostKeyChecking=no -W %h:%p {{ proxy_server_user }}@{{ proxy_server_host }}"'
+    test:
+      hosts:
+        test1:
+          ansible_host: sahabee.ir
+          ansible_user: root
+          sudo_pass: root
+          ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

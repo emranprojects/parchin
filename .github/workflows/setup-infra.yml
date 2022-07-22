@@ -1,0 +1,23 @@
+---
+name: Setup Infra
+on:
+  workflow_dispatch:
+jobs:
+  setup-infra:
+    runs-on: ubuntu-20.04
+    environment:
+      name: production
+      url: https://myparchin.com
+    steps:
+      - uses: actions/checkout@v2
+      - working-directory: deployment/ansible/
+        run: ansible-playbook setup-infra.yml -i inventory.yml
+          --limit production
+          --extra-vars "
+          ansible_host=${{ secrets.PARCHIN_SERVER_IP }}
+          ansible_user=${{ secrets.PARCHIN_SERVER_USER }}
+          sudo_pass=${{ secrets.PARCHIN_SERVER_PASS }}
+          proxy_server_host=${{ secrets.PROXY_SERVER_HOST }}
+          proxy_server_user=${{ secrets.PROXY_SERVER_USER }}
+          proxy_server_pass=${{ secrets.PROXY_SERVER_PASS }}
+          "
