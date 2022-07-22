@@ -18,9 +18,9 @@ export default function Navbar() {
         <LoginContext.Consumer>
             {loginContext =>
                 <BootstrapNavbar className="navbar ml-auto p-2" bg="dark" expand="lg">
-                    <Nav className="container-fluid">
+                    <Nav className="container-fluid justify-content-start">
                         <Nav.Item>
-                            <BootstrapNavbar.Brand href="/" className="text-white">پرچین</BootstrapNavbar.Brand>
+                            <BootstrapNavbar.Brand href="/" className="text-white ms-4">پرچین</BootstrapNavbar.Brand>
                         </Nav.Item>
                         {loginContext.isLoggedIn ? <>
                                 <Nav.Item>
@@ -33,13 +33,13 @@ export default function Navbar() {
                                 <a href={appPaths.login} className="btn btn-dark">ورود</a>
                             </Nav.Item>
                         }
-                        <Nav.Item className="ml-auto">
-                            <abbr title="GitHub repo">
-                                <a href="https://github.com/emranprojects/parchin" target="_blank"
-                                   className="btn btn-dark"><img src={githubIcon}/></a>
-                            </abbr>
-                        </Nav.Item>
                     </Nav>
+                    <Nav.Item>
+                        <abbr title="GitHub repo">
+                            <a href="https://github.com/emranprojects/parchin" target="_blank"
+                               className="btn btn-dark"><img src={githubIcon}/></a>
+                        </abbr>
+                    </Nav.Item>
                 </BootstrapNavbar>
             }
         </LoginContext.Consumer>
