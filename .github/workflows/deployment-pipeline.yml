@@ -1,0 +1,102 @@
+---
+name: Deployment Pipeline
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Inflate the version variable
+        run: |
+          echo "PARCHIN_VERSION=snapshot-${GITHUB_SHA}" >> $GITHUB_ENV
+      - name: Docker Login
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login -u ${{ secrets.DOCKER_REGISTRY_USER }} --password-stdin registry.gitlab.com
+      - name: Build images
+        run: docker-compose build --parallel
+      - name: Run unit tests
+        run: docker-compose run backend ./manage.py test
+      - name: Push images to the registry
+        run: docker-compose push
+  test-ansibles:
+    runs-on: ubuntu-20.04
+    needs:
+      - build-and-test
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
+      - uses: marceloprado/has-changed-path@v1
+        id: ansibles-changed
+        with:
+          paths: deployment/ansible
+      - name: Force GitHub Actions' docker daemon to use vfs.
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: |
+          sudo systemctl stop docker
+          echo '{"cgroup-parent":"/actions_job","storage-driver":"vfs"}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl start docker
+      - name: Choose TARGET_HOST ip
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: echo "TARGET_HOST=192.168.2.2" >> $GITHUB_ENV
+      - name: Create network
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: docker network create --subnet 192.168.2.0/24 test-net
+      - name: Start the target
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: docker run -d
+          --network test-net
+          --ip $TARGET_HOST
+          --privileged
+          hdavid0510/ubuntu-sshd:focal
+      - name: Mock myparchin.com to the test target
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: |
+          echo "$TARGET_HOST myparchin.com" | sudo tee -a /etc/hosts
+          echo "$TARGET_HOST api.myparchin.com" | sudo tee -a /etc/hosts
+      - name: Mock systemctl
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        working-directory: deployment/ansible/
+        run: sshpass -p root
+          ssh -o StrictHostKeyChecking=no
+          root@myparchin.com
+          bash -c "echo 'echo \$@' > /bin/systemctl"
+      - name: Setup infra
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        working-directory: deployment/ansible/
+        run: ansible-playbook setup-infra.yml -i inventory.yml -vvv
+          --limit test
+          --extra-vars "shecan_dns_1=4.4.4.4 shecan_dns_2=8.8.8.8"
+      - name: Inflate SSL files
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        working-directory: deployment/ansible/
+        run: |
+          echo "${{ secrets.SSL_FULL_CHAIN }}" > SSL_FULL_CHAIN_FILE
+          echo "${{ secrets.SSL_PRIVATE_KEY }}" > SSL_PRIVATE_KEY_FILE
+      - name: Deploy
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        working-directory: deployment/ansible/
+        run: ansible-playbook deploy.yml -i inventory.yml -vvv
+          --limit test
+          --extra-vars "
+          ssl_full_chain_local_path=SSL_FULL_CHAIN_FILE
+          ssl_private_key_local_path=SSL_PRIVATE_KEY_FILE
+          docker_hub_password=${{ secrets.DOCKER_HUB_PASSWORD }}
+          proxy_server_host=${{ secrets.PROXY_SERVER_HOST }}
+          proxy_server_user=${{ secrets.PROXY_SERVER_USER }}
+          proxy_server_pass=${{ secrets.PROXY_SERVER_PASS }}
+          parchin_version=snapshot-${GITHUB_SHA}
+          parchin_secret_key=${{ secrets.PARCHIN_SECRET_KEY }}
+          recaptcha_server_key=${{ secrets.RECAPTCHA_SERVER_KEY }}
+          kavenegar_token=dummy
+          "
+      - name: Smoke test >> Landing page
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: curl -i --fail https://myparchin.com
+      - name: Smoke test >> API
+        if: steps.ansibles-changed.outputs.changed == 'true'
+        run: sleep 5 && curl -i --fail https://api.myparchin.com

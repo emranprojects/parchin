@@ -1,0 +1,99 @@
+---
+- hosts: all
+  pre_tasks:
+    - name: Check mandatory variables
+      assert:
+        that: ({{ item }} is defined) and ({{ item }}|length > 0)
+      loop:
+        - src_root_dir
+        - ssl_full_chain_local_path
+        - ssl_private_key_local_path
+        - ssl_certs_remote_dir
+        - ssl_full_chain_remote_path
+        - ssl_private_key_remote_path
+        - nginx_conf_path
+        - dest_root_dir
+        - docker_hub_username
+        - docker_hub_password
+        - proxy_server_host
+        - proxy_server_user
+        - proxy_server_pass
+        - parchin_version
+        - parchin_secret_key
+        - recaptcha_server_key
+        - kavenegar_token
+        - kavenegar_template_name
+  tasks:
+    - name: 'Copy compose file'
+      copy:
+        src: '{{ src_root_dir }}/docker-compose.yml'
+        dest: '{{ dest_root_dir }}'
+    - name: 'Create build directories as a hack to make docker-compose work!'
+      file:
+        path: '{{ dest_root_dir }}/{{ item }}'
+        state: directory
+      loop:
+        - 'backend/'
+        - 'frontend/'
+    - name: 'Update SSL certs'
+      include: tasks/update-ssl-certs.yml
+    - name: 'Copy nginx config'
+      copy:
+        src: '{{ nginx_conf_path }}'
+        dest: '{{ dest_root_dir }}/nginx/'
+    - name: 'Copy .env'
+      template:
+        src: '.env.j2'
+        dest: '{{ dest_root_dir }}/.env'
+    - name: 'Login to Docker Hub registry (To extend pull rate limit)'
+      shell: 'echo {{ docker_hub_password }} | docker login --username {{ docker_hub_username }} --password-stdin'
+    - name: 'Config docker proxy: create config dir'
+      become: yes
+      file:
+        path: /etc/systemd/system/docker.service.d/
+        state: directory
+    - name: 'Config docker proxy: Copy config file'
+      become: yes
+      copy:
+        content: |
+          [Service]
+          Environment="HTTPS_PROXY=socks5://127.0.0.1:9000"
+        dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    - name: 'Restart Docker'
+      become: yes
+      shell: systemctl daemon-reload && service docker restart && sleep 3
+    - name: 'Start socks proxy'
+      shell: nohup sshpass -p {{ proxy_server_pass }} ssh -o StrictHostKeyChecking=no -D 0.0.0.0:9000 -N {{ proxy_server_user }}@{{ proxy_server_host }} &
+    - name: 'Pull images'
+      docker_compose:
+        project_src: '{{ dest_root_dir }}'
+        build: no
+        pull: yes
+        state: present
+    - name: 'Deconfig docker proxy'
+      become: yes
+      file:
+        path: /etc/systemd/system/docker.service.d/http-proxy.conf
+        state: absent
+    - name: 'Stop socks proxy'
+      become: yes
+      shell: >
+        pid=$(netstat -ptl | grep 0.0.0.0:9000 | tr -s ' ' | cut -d ' ' -f 7 | cut -d / -f 1) &&
+        echo "Socks proxy pid: $pid" &&
+        [ -z "$pid" ] ||
+        kill -9 $pid
+    - name: 'Restart Docker'
+      become: yes
+      shell: systemctl daemon-reload && service docker restart && sleep 3
+    - name: 'Stop containers'
+      docker_compose:
+        project_src: '{{ dest_root_dir }}'
+        build: no
+        pull: no
+        state: absent
+    - name: 'Start containers'
+      docker_compose:
+        project_src: '{{ dest_root_dir }}'
+        build: no
+        pull: no
+        state: present

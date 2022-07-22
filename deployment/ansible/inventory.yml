@@ -6,7 +6,7 @@ all:
     shecan_dns_2: 178.22.122.100
     src_root_dir: ../..
     dest_root_dir: '/home/{{ ansible_user }}/parchin/'
-    secret_key:
+    parchin_secret_key:
     nginx_conf_path: '{{ src_root_dir }}/nginx/nginx.conf'
     docker_hub_username: emranbm
     docker_hub_password:
@@ -25,6 +25,8 @@ all:
     ssl_full_chain_remote_path: '{{ ssl_certs_remote_dir }}/fullchain.pem'
     ssl_private_key_remote_path: '{{ ssl_certs_remote_dir }}/privkey.pem'
     parchin_version:
+    kavenegar_token:
+    kavenegar_template_name: 'verifyParchin'
     ansible_sudo_pass: '{{ sudo_pass }}'
     ansible_become_pass: '{{ sudo_pass }}'
     ansible_ssh_pass: '{{ sudo_pass }}'
@@ -39,7 +41,7 @@ all:
     test:
       hosts:
         test1:
-          ansible_host: sahabee.ir
+          ansible_host: myparchin.com
           ansible_user: root
           sudo_pass: root
           ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
