@@ -13,6 +13,7 @@ import {ToastContainer} from 'react-toastify';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import appPaths from "./appPaths";
+import LandingPage from "./pages/LandingPage";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,6 +30,7 @@ function Root() {
         <Navbar/>
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<LandingPage/>}/>
                 <Route path={appPaths.login} element={<Login/>} />
                 <Route path={appPaths.timeline} element={<Timeline/>}/>
             </Routes>
