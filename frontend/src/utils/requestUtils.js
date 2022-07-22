@@ -18,26 +18,17 @@ class RequestUtils {
                 headers,
                 body: body !== undefined ? JSON.stringify(body) : undefined
             })
-            switch (resp.status) {
-                case 400:
-                    const errors = await resp.json()
-                    let errorMsg = ""
-                    for (let title in errors)
-                        errorMsg += `${title}: ${errors[title]}\n`
-                    toast.error(errorMsg)
-                    break
-                case 401:
-                    toast.error("Not logged in!")
-                    onError401()
-                    break
+            if (resp.status === 401) {
+                toast.error("لاگین نیستید!")
+                onError401()
             }
             return resp
         } catch (e) {
-            toast.error("Failed to connect to server!")
+            toast.error("عدم ارتباط با سرور!")
             console.log(e)
             return {
                 status: -1,
-                text: async () => "Connection failed!",
+                text: async () => "عدم ارتباط با سرور!",
                 json: async () => ({})
             }
         }

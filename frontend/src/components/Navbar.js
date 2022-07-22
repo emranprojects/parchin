@@ -30,7 +30,7 @@ export default function Navbar() {
                                 </Nav.Item>
                             </> :
                             <Nav.Item>
-                                <a href={appPaths.login} className="btn btn-dark">Login</a>
+                                <a href={appPaths.login} className="btn btn-dark">ورود</a>
                             </Nav.Item>
                         }
                         <Nav.Item className="ml-auto">
