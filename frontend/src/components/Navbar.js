@@ -1,7 +1,7 @@
 import React from "react";
 import appPaths from "../appPaths";
 import {Nav, Navbar as BootstrapNavbar} from "react-bootstrap";
-import utils from "../utils";
+import loginUtils from "../utils/loginUtils";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSignOutAlt,} from '@fortawesome/free-solid-svg-icons'
 import LoginContext from "./LoginContext";
@@ -10,7 +10,7 @@ import githubIcon from "../static-media/github-logo-32.png"
 export default function Navbar() {
 
     function logout(loginContext) {
-        utils.logout()
+        loginUtils.logout()
         loginContext.setIsLoggedIn(false)
     }
 

@@ -1,5 +1,6 @@
 const appPaths = {
-    login: "/login"
+    login: "/login",
+    timeline: "/timeline"
 }
 
 export default appPaths

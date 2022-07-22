@@ -1,5 +1,5 @@
 import {Card, Col, Row} from "react-bootstrap";
-import utils from "../utils";
+import generalUtils from "../utils/generalUtils";
 
 export default function ({id = "", imageUrl = "", title = "", price = 0, tags = [], dealerId = "", dealerName = "", dealerImageUrl = ""}) {
     return <Card className="p-3 pb-0 pt-0">
@@ -17,7 +17,7 @@ export default function ({id = "", imageUrl = "", title = "", price = 0, tags = 
             <Row>
                 <Col md={8}>
                     <Row>
-                        <b>{utils.convertNumberToCommaSeparatedStr(price)} تومان</b>
+                        <b>{generalUtils.convertNumberToCommaSeparatedStr(price)} تومان</b>
                     </Row>
                     <Row className="mt-4">
                         <div>

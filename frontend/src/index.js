@@ -2,26 +2,37 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import Timeline from "./pages/Timeline";
 import Navbar from "./components/Navbar";
 import LoginContext from "./components/LoginContext";
-import utils from "./utils";
+import loginUtils from "./utils/loginUtils";
+import {ToastContainer} from 'react-toastify';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Login from "./pages/Login";
+import appPaths from "./appPaths";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Root/>
+        <ToastContainer rtl={true}/>
     </React.StrictMode>
 );
 
 function Root() {
-    const [isLoggedIn, setIsLoggedIn] = useState(utils.isLoggedIn())
+    const [isLoggedIn, setIsLoggedIn] = useState(loginUtils.isLoggedIn())
 
     return <LoginContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
         <Navbar/>
-        <Timeline/>
+        <BrowserRouter>
+            <Routes>
+                <Route path={appPaths.login} element={<Login/>} />
+                <Route path={appPaths.timeline} element={<Timeline/>}/>
+            </Routes>
+        </BrowserRouter>
     </LoginContext.Provider>
 }
 
