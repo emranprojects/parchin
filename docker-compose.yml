@@ -9,6 +9,8 @@ services:
       - PARCHIN_DB_URL=mongodb://database:27017
       - PARCHIN_SECRET_KEY
       - RECAPTCHA_SERVER_KEY
+      - KAVENEGAR_TOKEN
+      - KAVENEGAR_TEMPLATE_NAME
     volumes:
       - backend_static_files:/app/static/
     ports:
