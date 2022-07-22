@@ -99,4 +99,4 @@ jobs:
         run: curl -i --fail https://myparchin.com
       - name: Smoke test >> API
         if: steps.ansibles-changed.outputs.changed == 'true'
-        run: sleep 5 && curl -i --fail https://api.myparchin.com
+        run: sleep 5 && curl -i --fail https://api.myparchin.com/api/
