@@ -16,6 +16,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import appPaths from "./appPaths";
 import LandingPage from "./pages/LandingPage";
+import UserProfile from "./pages/UserProfile";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -33,8 +34,9 @@ function Root() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LandingPage/>}/>
-                <Route path={appPaths.login} element={<Login/>} />
+                <Route path={appPaths.login} element={<Login/>}/>
                 <Route path={appPaths.timeline} element={<Timeline/>}/>
+                <Route path={appPaths.userProfile(":userId")} element={<UserProfile/>}/>
             </Routes>
         </BrowserRouter>
     </LoginContext.Provider>

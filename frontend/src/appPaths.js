@@ -1,6 +1,7 @@
 const appPaths = {
     login: "/login",
-    timeline: "/timeline"
+    timeline: "/timeline",
+    userProfile: (userId) => `/u/${userId}`,
 }
 
 export default appPaths
