@@ -1,10 +1,10 @@
 import {Col} from "react-bootstrap";
-import ProductCard from "./ProductCard";
+import PostCard from "./PostCard";
 
-export default function ({products}) {
-    return products.map(p =>
+export default function ({posts}) {
+    return posts.map(p =>
         <Col lg={4} md={6} sm={12}>
-            <ProductCard
+            <PostCard
                 imageUrl={p.imageUrl}
                 title={p.title}
                 price={p.price}
