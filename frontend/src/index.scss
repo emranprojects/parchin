@@ -20,8 +20,6 @@ code {
     monospace;
 }
 
-$theme-colors: (
-        "primary": #008558,
-);
+$primary: #008558;
 
 @import '~bootstrap/scss/bootstrap.scss';
