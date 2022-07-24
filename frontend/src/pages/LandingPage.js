@@ -8,7 +8,7 @@ export default function () {
                 <img src="/logo192.png"/>
                 <h1 className="text-white">پرچین</h1>
                 <h5 className="font-italic text-white">حس یک معامله‌ی خوب!</h5>
-                <a href={appPaths.login} className="btn btn-success mt-5">ورود به پرچین</a>
+                <a href={appPaths.login} className="btn btn-primary mt-5">ورود به پرچین</a>
             </div>
         </div>
     </>

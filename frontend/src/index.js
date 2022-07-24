@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+import 'bootstrap/scss/bootstrap.scss'; // Bootstrap should be imported before index.scss to not rollback overrides
+import './index.scss';
+
 import 'react-toastify/dist/ReactToastify.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
