@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSignOutAlt,} from '@fortawesome/free-solid-svg-icons'
 import LoginContext from "./LoginContext";
 import githubIcon from "../static-media/github-logo-32.png"
+import Container from "react-bootstrap/Container";
 
 export default function Navbar() {
 
@@ -18,28 +19,29 @@ export default function Navbar() {
         <LoginContext.Consumer>
             {loginContext =>
                 <BootstrapNavbar className="navbar ml-auto p-2" bg="dark" expand="lg">
-                    <Nav className="container-fluid justify-content-start">
-                        <Nav.Item>
-                            <BootstrapNavbar.Brand href="/" className="text-white ms-4">پرچین</BootstrapNavbar.Brand>
-                        </Nav.Item>
-                        {loginContext.isLoggedIn ? <>
-                                <Nav.Item>
-                                    <a href="/" className="btn btn-dark" onClick={() => logout(loginContext)}>
-                                        <abbr title="خروج"><FontAwesomeIcon icon={faSignOutAlt}/></abbr>
-                                    </a>
-                                </Nav.Item>
-                            </> :
-                            <Nav.Item>
-                                <a href={appPaths.login} className="btn btn-dark">ورود</a>
-                            </Nav.Item>
-                        }
-                    </Nav>
-                    <Nav.Item>
-                        <abbr title="GitHub repo">
-                            <a href="https://github.com/emranprojects/parchin" target="_blank"
-                               className="btn btn-dark"><img src={githubIcon}/></a>
-                        </abbr>
-                    </Nav.Item>
+                    <Container fluid={true}>
+                        <BootstrapNavbar.Brand href="/" className="navbar-dark">پرچین</BootstrapNavbar.Brand>
+                        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" className="navbar-dark"/>
+                        <BootstrapNavbar.Collapse id="basic-navbar-nav">
+                            <Nav className="container-fluid justify-content-start">
+                                {loginContext.isLoggedIn ? <>
+                                        <Nav.Item>
+                                            <a href="/" className="btn btn-dark" onClick={() => logout(loginContext)}>
+                                                <abbr title="خروج"><FontAwesomeIcon icon={faSignOutAlt}/></abbr>
+                                            </a>
+                                        </Nav.Item>
+                                    </> :
+                                    <Nav.Item>
+                                        <a href={appPaths.login} className="btn btn-dark">ورود</a>
+                                    </Nav.Item>
+                                }
+                            </Nav>
+                        </BootstrapNavbar.Collapse>
+                    </Container>
+                    <abbr title="GitHub repo">
+                        <a href="https://github.com/emranprojects/parchin" target="_blank"
+                           className="btn"><img src={githubIcon}/></a>
+                    </abbr>
                 </BootstrapNavbar>
             }
         </LoginContext.Consumer>
