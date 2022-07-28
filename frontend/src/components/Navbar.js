@@ -26,6 +26,13 @@ export default function Navbar() {
                             <Nav className="container-fluid justify-content-start">
                                 {loginContext.isLoggedIn ? <>
                                         <Nav.Item>
+                                            <a href={appPaths.userProfile("self")}>
+                                                <img style={{maxHeight: "40px"}}
+                                                     className="rounded-5"
+                                                     src="https://quera.org/media/CACHE/images/public/careers/quotes/narrator/a5bcbbf298624df4991db9334ed4f571/7c9bc808882105cb8cd3f1e11387eaff.jpg"/>
+                                            </a>
+                                        </Nav.Item>
+                                        <Nav.Item>
                                             <a href="/" className="btn btn-dark" onClick={() => logout(loginContext)}>
                                                 <abbr title="خروج"><FontAwesomeIcon icon={faSignOutAlt}/></abbr>
                                             </a>
