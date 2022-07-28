@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import appPaths from "./appPaths";
 import LandingPage from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
+import UserSearch from "./pages/UserSearch";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -37,6 +38,7 @@ function Root() {
                 <Route path={appPaths.login} element={<Login/>}/>
                 <Route path={appPaths.timeline} element={<Timeline/>}/>
                 <Route path={appPaths.userProfile(":userId")} element={<UserProfile/>}/>
+                <Route path={appPaths.userSearch} element={<UserSearch/>}/>
             </Routes>
         </BrowserRouter>
     </LoginContext.Provider>
