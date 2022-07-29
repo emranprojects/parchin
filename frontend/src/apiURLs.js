@@ -8,6 +8,9 @@ class ApiUrls {
     get submitLoginCode() {
         return `${this.BASE_URL}/users/submit-code/`
     }
+    get selfUser() {
+        return `${this.BASE_URL}/users/self/`
+    }
 }
 
 const apiURLs = new ApiUrls()

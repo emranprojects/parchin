@@ -1,3 +1,11 @@
+import {useEffect} from "react";
+
+function _useEffectAsync(asyncFunc, deps, thisArg) {
+    useEffect(() => {
+        asyncFunc.apply(thisArg)
+    }, deps)
+}
+
 export default {
     convertNumberToCommaSeparatedStr(num) {
         const str = num.toString()
@@ -27,5 +35,8 @@ export default {
         if (normalPhoneNumber.length !== "+989120001122".length)
             return [false, normalPhoneNumber]
         return [true, normalPhoneNumber]
-    }
+    },
+    useEffectAsync(asyncFunc, deps = [], thisArg = this) {
+        _useEffectAsync.apply(this, [asyncFunc, deps, thisArg])
+    },
 }

@@ -4,11 +4,20 @@ import {useParams} from "react-router-dom";
 import {useState} from "react";
 import Button from "react-bootstrap/Button";
 import UsersList from "../components/UsersList";
+import generalUtils from "../utils/generalUtils";
+import requestUtils from "../utils/requestUtils";
+import apiURLs from "../apiURLs";
+import {toast} from "react-toastify";
 
 export default function () {
     const {userId} = useParams()
     const isSelf = userId === "self"
-    const [name, setName] = useState("عمران باتمان‌غلیچ");
+    const [user, setUser] = useState({
+        id: "",
+        first_name: "",
+        last_name:"",
+        phone_number: "",
+    });
     const [posts, setPosts] = useState([{
         id: "1",
         imageUrl: "https://www.tedyshop.com/wp-content/uploads/2019/07/%D8%AE%D8%B1%DB%8C%D8%AF-%D8%AE%D8%B1%D8%B3-%D8%B9%D8%B1%D9%88%D8%B3%DA%A9%DB%8C-1.jpg",
@@ -31,6 +40,11 @@ export default function () {
             imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpF8Q9z6WXEfk5i1EISZSKm5GDFtsgu6ya-Q&usqp=CAU",
         }]);
 
+    generalUtils.useEffectAsync(async () => {
+        const resp = await requestUtils.get(apiURLs.selfUser, () => toast.error("نیاز به ورود!"))
+        setUser(await resp.json())
+    }, [])
+
     return (
         <Container>
             <Row className="mb-5"/>
@@ -41,7 +55,7 @@ export default function () {
                          src="https://quera.org/media/CACHE/images/public/careers/quotes/narrator/a5bcbbf298624df4991db9334ed4f571/7c9bc808882105cb8cd3f1e11387eaff.jpg"/>
                 </Col>
                 <Col>
-                    <Row><h4>{name}</h4></Row>
+                    <Row><h4>{user.first_name} {user.last_name}</h4></Row>
                     <Row><span>{friends.length} دوست</span></Row>
                     <Row><span>{posts.length} پست</span></Row>
                     {isSelf ? "" :
