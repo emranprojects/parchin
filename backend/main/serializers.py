@@ -1,14 +1,13 @@
-from abc import ABC
-
-from django.conf import settings
+from drf_recaptcha.fields import ReCaptchaV3Field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.validators import UniqueValidator
-from drf_recaptcha.fields import ReCaptchaV3Field
+
+from main.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
+        model = User
         fields = ['id', 'first_name', 'last_name', 'phone_number']
 
 
