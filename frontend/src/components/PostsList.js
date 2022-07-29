@@ -3,8 +3,9 @@ import PostCard from "./PostCard";
 
 export default function ({posts}) {
     return posts.map(p =>
-        <Col lg={4} md={6} sm={12}>
+        <Col lg={4} md={6} sm={12} key={p.id}>
             <PostCard
+                id={p.id}
                 imageUrl={p.imageUrl}
                 title={p.title}
                 price={p.price}

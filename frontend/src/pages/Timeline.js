@@ -7,6 +7,7 @@ export default function Timeline() {
             <Row className="mb-5"/>
             <Row>
                 <PostsList posts={[{
+                    id: "1",
                     imageUrl: "https://www.tedyshop.com/wp-content/uploads/2019/07/%D8%AE%D8%B1%DB%8C%D8%AF-%D8%AE%D8%B1%D8%B3-%D8%B9%D8%B1%D9%88%D8%B3%DA%A9%DB%8C-1.jpg",
                     title: "خرس گوگولی",
                     price: 45000,

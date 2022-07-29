@@ -22,7 +22,7 @@ export default function ({id = "", imageUrl = "", title = "", price = 0, tags = 
                     </Row>
                     <Row className="mt-4">
                         <div>
-                            {tags.map(tag => <span className="m-1 p-1 rounded text-muted"
+                            {tags.map(tag => <span key={tag} className="m-1 p-1 rounded text-muted"
                                                    style={{background: "#cccccc"}}>{tag} </span>)
                             }
                         </div>
