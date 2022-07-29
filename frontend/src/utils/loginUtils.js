@@ -1,6 +1,5 @@
 export default {
-    setLoggedIn(phoneNumber, token) {
-        localStorage.setItem('phoneNumber', phoneNumber)
+    setLoggedIn(token) {
         localStorage.setItem('token', token)
     },
     isLoggedIn() {
@@ -13,6 +12,9 @@ export default {
     },
     getToken() {
         return localStorage.getItem('token')
+    },
+    setPhoneNumber(phoneNumber){
+        localStorage.setItem('phoneNumber', phoneNumber)
     },
     getPhoneNumber() {
         return localStorage.getItem('phoneNumber')
