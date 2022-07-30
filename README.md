@@ -1,3 +1,3 @@
 # Parchin
-[![Build and Test](https://github.com/emranprojects/parchin/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/emranprojects/parchin/actions/workflows/build-and-test.yml)  
+[![Deployment Pipeline](https://github.com/emranprojects/parchin/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/emranprojects/parchin/actions/workflows/deployment-pipeline.yml)  
 Trade with those you trust!
