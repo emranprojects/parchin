@@ -3,12 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 
-from main.models import User
 from main.serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ViewSet):
-    queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
     @action(methods=['GET', 'PUT', 'DELETE'], detail=False, url_path="self")
