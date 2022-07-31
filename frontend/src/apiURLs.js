@@ -3,10 +3,10 @@ class ApiUrls {
         return window.AppConfig.API_BASE_URL
     }
     get requestLoginCode() {
-        return `${this.BASE_URL}/users/request-code/`
+        return `${this.BASE_URL}/login/request-code/`
     }
     get submitLoginCode() {
-        return `${this.BASE_URL}/users/submit-code/`
+        return `${this.BASE_URL}/login/submit-code/`
     }
     get selfUser() {
         return `${this.BASE_URL}/users/self/`
