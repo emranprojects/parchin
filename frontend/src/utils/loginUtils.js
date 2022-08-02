@@ -1,6 +1,7 @@
 export default {
-    setLoggedIn(token) {
+    setLoggedIn(token, selfID) {
         localStorage.setItem('token', token)
+        localStorage.setItem('selfID', selfID)
     },
     isLoggedIn() {
         const token = this.getToken()
@@ -9,14 +10,18 @@ export default {
     logout() {
         localStorage.removeItem('phoneNumber')
         localStorage.removeItem('token')
+        localStorage.removeItem('selfID')
     },
     getToken() {
         return localStorage.getItem('token')
     },
-    setPhoneNumber(phoneNumber){
+    setPhoneNumber(phoneNumber) {
         localStorage.setItem('phoneNumber', phoneNumber)
     },
     getPhoneNumber() {
         return localStorage.getItem('phoneNumber')
+    },
+    getID() {
+        return localStorage.getItem('selfID')
     },
 }

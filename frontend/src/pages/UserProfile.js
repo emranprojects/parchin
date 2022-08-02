@@ -8,10 +8,11 @@ import generalUtils from "../utils/generalUtils";
 import requestUtils from "../utils/requestUtils";
 import apiURLs from "../apiURLs";
 import {toast} from "react-toastify";
+import loginUtils from "../utils/loginUtils"
 
 export default function () {
     const {userId} = useParams()
-    const isSelf = userId === "self"
+    const isSelf = ["self", loginUtils.getID()].includes(userId)
     const [user, setUser] = useState({
         id: "",
         first_name: "",

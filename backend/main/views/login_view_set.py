@@ -39,4 +39,5 @@ class LoginViewSet(viewsets.ViewSet):
             raise ValidationError("Invalid auth code!", code=HTTP_400_BAD_REQUEST)
         user, user_newly_created = User.objects.get_or_create(phone_number=serializer.data['phone_number'])
         token, _ = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key}, status=HTTP_201_CREATED if user_newly_created else HTTP_200_OK)
+        return Response({"token": token.key, "id": user.id},
+                        status=HTTP_201_CREATED if user_newly_created else HTTP_200_OK)

@@ -117,7 +117,9 @@ function CodeSubmitStage({sharedData: phoneNumber, goNextStage}) {
             case 200:
             case 201:
                 toast.success("خوش آمدید!")
-                loginUtils.setLoggedIn((await resp.json()).token)
+                const loginInfo = await resp.json()
+                console.log(loginInfo)
+                loginUtils.setLoggedIn(loginInfo.token, loginInfo.id)
                 loginContext.setIsLoggedIn(true)
                 goNextStage(phoneNumber)
                 break
