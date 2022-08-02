@@ -2,12 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from djongo.models import ArrayReferenceField
 
-
-class Post(models.Model):
-    title = models.CharField(max_length=128)
-    description = models.TextField()
-    price = models.PositiveIntegerField()
-    isBuyRequest = models.BooleanField(default=False)
+from main.models.post import Post
 
 
 class User(AbstractUser):

@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_200_OK
 
 from main import utils
-from main.models import User
+from main.models.user import User
 from main.serializers.auth_code_serializers import AuthCodeRequestSerializer, AuthCodeSubmitMessageSerializer
 
 
