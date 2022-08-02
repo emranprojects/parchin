@@ -7,15 +7,25 @@ export default function ({components}) {
     if (!(components?.length > 0))
         return <></>
 
-    function goNextStage(newSharedData) {
-        setTimeout(() => {
-            if (newSharedData !== undefined)
-                setSharedData(newSharedData)
-            setCurrentIndex(i => i + 1)
-        }, 0)
+    function getGoNextStageFunc(stageIndex) {
+        function goNextStage(newSharedData) {
+            setTimeout(() => {
+                if (newSharedData !== undefined)
+                    setSharedData(newSharedData)
+                setCurrentIndex(i => {
+                    if (i <= stageIndex)
+                        return i + 1
+                    return i
+                })
+            }, 0)
+        }
+
+        return goNextStage
     }
 
-    const nextableComponents = components.map(c => React.cloneElement(c, {sharedData, goNextStage}))
+    const nextableComponents = components.map((c, index) =>
+        React.cloneElement(c, {sharedData, goNextStage: getGoNextStageFunc(index)}),
+    )
 
     return nextableComponents[currentIndex]
 }
