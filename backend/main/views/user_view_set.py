@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 
-from main.serializers import UserSerializer
+from main.serializers.user_serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ViewSet):

@@ -12,7 +12,7 @@ from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST, HTTP_
 
 from main import utils
 from main.models import User
-from main.serializers import AuthCodeRequestSerializer, AuthCodeSubmitMessageSerializer
+from main.serializers.auth_code_serializers import AuthCodeRequestSerializer, AuthCodeSubmitMessageSerializer
 
 
 class LoginViewSet(viewsets.ViewSet):

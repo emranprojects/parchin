@@ -2,16 +2,6 @@ from drf_recaptcha.fields import ReCaptchaV3Field
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from main.models import User
-
-
-class UserSerializer(serializers.ModelSerializer):
-    phone_number = serializers.CharField(read_only=True)
-
-    class Meta:
-        model = User
-        fields = ['id', 'first_name', 'last_name', 'phone_number']
-
 
 class AuthCodeSerializer(serializers.Serializer):
     recaptcha = ReCaptchaV3Field(action="auth-code")
