@@ -87,15 +87,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASE_URL = os.environ.get("PARCHIN_DB_URL", "mongodb://localhost:27017")
-
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'parchin-db',
-        'CLIENT': {
-            'host': DATABASE_URL
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': '5432',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
     }
 }
 

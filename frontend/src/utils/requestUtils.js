@@ -1,6 +1,6 @@
-import React from "react";
-import {toast} from "react-toastify";
-import loginUtils from "./loginUtils";
+import React from "react"
+import {toast} from "react-toastify"
+import loginUtils from "./loginUtils"
 
 class RequestUtils {
     async request(method, url, onError401 = () => undefined, authorized = false, body = undefined) {
@@ -16,11 +16,22 @@ class RequestUtils {
             const resp = await fetch(url, {
                 method,
                 headers,
-                body: body !== undefined ? JSON.stringify(body) : undefined
+                body: body !== undefined ? JSON.stringify(body) : undefined,
             })
-            if (resp.status === 401) {
-                toast.error("لاگین نیستید!")
-                onError401()
+            if (resp.status >= 300) {
+                switch (resp.status) {
+                    case 400:
+                        const errors = (await resp.json()).map(e => (<><span>{e}</span><br/></>))
+                        toast.error(<>{errors}</>)
+                        break
+                    case 401:
+                        toast.error("لاگین نیستید!", {toastId:"Not logged in"})
+                        onError401()
+                        break
+                    default:
+                        toast.error(`خطا! (کد ${resp.status})`)
+                        break
+                }
             }
             return resp
         } catch (e) {
@@ -29,7 +40,7 @@ class RequestUtils {
             return {
                 status: -1,
                 text: async () => "عدم ارتباط با سرور!",
-                json: async () => ({})
+                json: async () => ({}),
             }
         }
     }
@@ -43,7 +54,7 @@ class RequestUtils {
     }
 
     async put(url, body = {}, onError401 = () => undefined) {
-        return await this.request('PUT', url,onError401, true, body)
+        return await this.request('PUT', url, onError401, true, body)
     }
 
     async delete(url, onError401 = () => undefined) {

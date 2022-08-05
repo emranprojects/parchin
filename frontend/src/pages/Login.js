@@ -109,23 +109,12 @@ function CodeSubmitStage({sharedData: phoneNumber, goNextStage}) {
             recaptcha: recaptcha,
             auth_code: authCode,
         }, () => undefined, false)
-        // const resp = {status: 200, json: async () => ({token: "ABC"})}
-        switch (resp.status) {
-            case 400:
-                toast.error("کد تایید اشتباه است!")
-                return
-            case 200:
-            case 201:
-                toast.success("خوش آمدید!")
-                const loginInfo = await resp.json()
-                console.log(loginInfo)
-                loginUtils.setLoggedIn(loginInfo.token, loginInfo.id)
-                loginContext.setIsLoggedIn(true)
-                goNextStage(phoneNumber)
-                break
-            default:
-                toast.error("خطای غیرمنتظره! کد: " + resp.status)
-                return
+        if (resp.ok) {
+            toast.success("خوش آمدید!")
+            const loginInfo = await resp.json()
+            loginUtils.setLoggedIn(loginInfo.token, loginInfo.id)
+            loginContext.setIsLoggedIn(true)
+            goNextStage(phoneNumber)
         }
     }
 
@@ -196,10 +185,8 @@ function UserRequiredInfoStage({sharedData, goNextStage}) {
             first_name: newFirstName,
             last_name: newLastName,
         })
-        if (resp.status === 200)
+        if (resp.ok)
             goNextStage()
-        else
-            toast.error(`خطا در ارسال اطلاعات! (کد: ${resp.status} )`)
     }
 
     return (

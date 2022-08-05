@@ -11,6 +11,12 @@ class ApiUrls {
     get selfUser() {
         return `${this.BASE_URL}/users/self/`
     }
+    get friendRequestList(){
+        return `${this.BASE_URL}/friend-request/`
+    }
+    friendRequest(id){
+        return `${this.friendRequestList}${id}`
+    }
 }
 
 const apiURLs = new ApiUrls()

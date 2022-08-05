@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from main.views.friend_request_view import FriendRequestViewSet
 from main.views.login_view_set import LoginViewSet
 from main.views.user_view_set import UserViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename="users")
 router.register(r'login', LoginViewSet, basename="login")
+router.register(r'friend-request', FriendRequestViewSet, basename="friend-request")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
