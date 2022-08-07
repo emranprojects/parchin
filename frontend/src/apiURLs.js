@@ -9,7 +9,13 @@ class ApiUrls {
         return `${this.BASE_URL}/login/submit-code/`
     }
     get selfUser() {
-        return `${this.BASE_URL}/users/self/`
+        return `${this.BASE_URL}/self-user/`
+    }
+    get usersList() {
+        return `${this.BASE_URL}/users/`
+    }
+    user(id) {
+        return `${this.usersList}${id}`
     }
     get friendRequestList(){
         return `${this.BASE_URL}/friend-request/`

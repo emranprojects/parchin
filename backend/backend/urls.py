@@ -19,10 +19,11 @@ from rest_framework.routers import DefaultRouter
 
 from main.views.friend_request_view import FriendRequestViewSet
 from main.views.login_view_set import LoginViewSet
-from main.views.user_view_set import UserViewSet
+from main.views.self_user_view_set import SelfUserViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet, basename="users")
+router.register(r'', SelfUserViewSet, basename="self-user")
+router.register(r'users', SelfUserViewSet, basename="users")
 router.register(r'login', LoginViewSet, basename="login")
 router.register(r'friend-request', FriendRequestViewSet, basename="friend-request")
 
