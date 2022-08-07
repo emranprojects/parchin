@@ -3,6 +3,7 @@ const appPaths = {
     timeline: "/timeline",
     userProfile: (userId) => `/u/${userId}`,
     userSearch: "/user-search",
+    friendRequests: "/friend-requests",
 }
 
 export default appPaths

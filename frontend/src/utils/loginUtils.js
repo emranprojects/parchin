@@ -22,6 +22,6 @@ export default {
         return localStorage.getItem('phoneNumber')
     },
     getID() {
-        return localStorage.getItem('selfID')
+        return Number(localStorage.getItem('selfID'))
     },
 }

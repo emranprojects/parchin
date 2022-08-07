@@ -20,11 +20,11 @@ class ApiUrls {
     get friendRequestList(){
         return `${this.BASE_URL}/friend-request/`
     }
+    get friendRequestPreviewList(){
+        return `${this.friendRequestList}previews/`
+    }
     friendRequest(id){
         return `${this.friendRequestList}${id}`
-    }
-    hasPendingRequest(targetUserId){
-        return `${this.friendRequestList}has-pending-request/${targetUserId}/`
     }
 }
 

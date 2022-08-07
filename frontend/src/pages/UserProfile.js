@@ -53,8 +53,9 @@ export default function () {
     generalUtils.useEffectAsync(async () => {
         if (isSelf)
             return
-        const resp = await requestUtils.get(apiURLs.hasPendingRequest(userId), () => setIsLoggedIn(false))
-        setHasPendingFriendRequest(await resp.json())
+        const resp = await requestUtils.get(apiURLs.friendRequestPreviewList, () => setIsLoggedIn(false))
+        const friendReqs = await resp.json()
+        setHasPendingFriendRequest(friendReqs.some(r => r.target.toString() === userId))
     })
 
     if (!isLoggedIn)
@@ -101,7 +102,7 @@ export default function () {
             </Row>
             <h3>دوستان</h3>
             <Row className="mb-5">
-                <UsersList users={friends}/>
+                <UsersList users={friends} btnText="درخواست دوستی"/>
             </Row>
             <h3>پست‌ها</h3>
             <Row>

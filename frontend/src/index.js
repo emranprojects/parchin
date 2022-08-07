@@ -19,6 +19,7 @@ import LandingPage from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
 import UserSearch from "./pages/UserSearch";
 import Drawer from "./components/Drawer"
+import FriendRequests from "./pages/FriendRequests"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -42,6 +43,7 @@ function Root() {
                 <Route path={appPaths.timeline} element={<Timeline/>}/>
                 <Route path={appPaths.userProfile(":userId")} element={<UserProfile/>}/>
                 <Route path={appPaths.userSearch} element={<UserSearch/>}/>
+                <Route path={appPaths.friendRequests} element={<FriendRequests/>}/>
             </Routes>
         </BrowserRouter>
     </LoginContext.Provider>

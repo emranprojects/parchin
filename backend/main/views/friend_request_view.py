@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from main.models.friend_request import FriendRequest
-from main.serializers.friend_request_serializers import FriendRequestSerializer
+from main.serializers.friend_request_serializers import FriendRequestPreviewSerializer, FriendRequestSerializer
 from main.utils import integrity_error_utils
 from main.utils.integrity_error_utils import IntegrityErrorType
 
@@ -27,8 +27,8 @@ class FriendRequestViewSet(viewsets.ModelViewSet):
             if integrity_error_utils.get_error_type(e) == IntegrityErrorType.UNIQUE_CONSTRAINT:
                 raise ValidationError("درخواست دوستی قبلا ارسال شده است!")
 
-    @action(['GET'], detail=False, url_path=r"has-pending-request/(?P<target_id>\w+)")
-    def active_friend_request_exists(self, request: Request, target_id, *args, **kwargs):
-        active_friend_request_exists = FriendRequest.objects.filter(requester=request.user) \
-            .filter(target_id=target_id).exists()
-        return Response(active_friend_request_exists)
+    @action(['GET'], detail=False, url_path=r"previews")
+    def get_friend_request_previews(self, request: Request):
+        friend_requests = self.get_queryset().all()
+        serializer = FriendRequestPreviewSerializer(friend_requests, many=True)
+        return Response(serializer.data)

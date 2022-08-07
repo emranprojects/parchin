@@ -1,25 +1,36 @@
-import {Card, Col, Row} from "react-bootstrap";
-import generalUtils from "../utils/generalUtils";
-import appPaths from "../appPaths";
-import Button from "react-bootstrap/Button";
+import {Card, Row} from "react-bootstrap"
+import Button from "react-bootstrap/Button"
 
-export default function ({id = "", imageUrl = "", name = ""}) {
+export default function ({
+                             user,
+                             btnText = "", onBtnClicked = (e) => undefined,
+                             btn2Text = "", onBtn2Clicked = (e) => undefined,
+                         }) {
     return (
         <Card>
             <Card.Body>
                 <Row className="mb-3">
-                    <a href={"/u/" + id} className="text-center">
+                    <a href={"/u/" + user.id} className="text-center">
                         <img style={{width: "100%", height: "auto"}}
                              className="rounded-1"
-                             src={imageUrl}/>
+                             src={user.imageUrl}/>
                     </a>
                 </Row>
                 <Row>
-                    <span>{name}</span>
+                    <span>{user.first_name} {user.last_name}</span>
                 </Row>
-                <Row className="mt-2">
-                    <Button className="btn">درخواست دوستی</Button>
-                </Row>
+                {btnText !== "" && (
+                    <Row className="mt-2">
+                        <Button variant="outline-primary" className="shadow-none"
+                                onClick={onBtnClicked}>{btnText}</Button>
+                    </Row>
+                )}
+                {btn2Text !== "" && (
+                    <Row className="mt-2">
+                        <Button variant="outline-danger" className="shadow-none"
+                                onClick={onBtn2Clicked}>{btn2Text}</Button>
+                    </Row>
+                )}
             </Card.Body>
         </Card>
     )

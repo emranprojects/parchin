@@ -12,11 +12,14 @@ import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons"
 import LoginContext from "./LoginContext"
 import githubIcon from "../static-media/github-logo-32.png"
 import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch"
+import {faUsers} from "@fortawesome/free-solid-svg-icons/faUsers"
+import Row from "react-bootstrap/Row"
 
 export default function ({visible: visibleProp, onHide = () => undefined}) {
     const [visible, setVisible] = useState(visibleProp)
     const [isLoggedIn, setIsLoggedIn] = useState(loginUtils.isLoggedIn())
     const [user, setUser] = useState({first_name: "", last_name: ""})
+    const [incomingFriendRequestsCount, setIncomingFriendRequestsCount] = useState(0)
 
     function logout(loginContext) {
         loginUtils.logout()
@@ -28,10 +31,24 @@ export default function ({visible: visibleProp, onHide = () => undefined}) {
     }, [visibleProp])
 
     generalUtils.useEffectAsync(async () => {
+        if (!isLoggedIn)
+            return
         const resp = await requestUtils.get(apiURLs.selfUser, () => setIsLoggedIn(false))
         if (resp.ok)
             setUser(await resp.json())
     })
+
+    generalUtils.useEffectAsync(async () => {
+        if (!isLoggedIn)
+            return
+        const resp = await requestUtils.get(apiURLs.friendRequestPreviewList, () => setIsLoggedIn(false))
+        if (resp.ok) {
+            const allReqs = await resp.json()
+            const incomingReqs = allReqs.filter(r => r.target === loginUtils.getID())
+            setIncomingFriendRequestsCount(incomingReqs.length)
+        }
+    })
+
 
     return (
         <LoginContext.Consumer>
@@ -41,7 +58,7 @@ export default function ({visible: visibleProp, onHide = () => undefined}) {
                         <Offcanvas.Title><h4>پرچین</h4></Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <Container>
+                        <Container className="g-2">
                             {isLoggedIn ? <>
                                     <CenteredRow>
                                         <a href={appPaths.userProfile("self")}>
@@ -53,11 +70,21 @@ export default function ({visible: visibleProp, onHide = () => undefined}) {
                                     <CenteredRow className="mt-3 mb-4">
                                         <h4>{user.first_name} {user.last_name}</h4>
                                     </CenteredRow>
-                                    <CenteredRow>
-                                        <a href={appPaths.userSearch} className="btn btn-primary">
-                                                <FontAwesomeIcon icon={faSearch}/> جستجوی کاربران
+                                    <Row className="mb-2">
+                                        <a href={appPaths.friendRequests}
+                                           className="btn btn-outline-primary w-100 text-end">
+                                            <FontAwesomeIcon icon={faUsers}/> درخواست‌های دوستی
+                                            &nbsp;
+                                            <sup className="bg-primary ps-1 pe-1 rounded-1 text-white">
+                                                {incomingFriendRequestsCount}
+                                            </sup>
                                         </a>
-                                    </CenteredRow>
+                                    </Row>
+                                    <Row>
+                                        <a href={appPaths.userSearch} className="btn btn-outline-primary  w-100 text-end">
+                                            <FontAwesomeIcon icon={faSearch}/> جستجوی کاربران
+                                        </a>
+                                    </Row>
                                     <CenteredRow className="mt-4">
                                         <a href="/" className="btn btn-outline-secondary"
                                            onClick={() => logout(loginContext)}>
