@@ -48,7 +48,14 @@ export default function () {
     generalUtils.useEffectAsync(async () => {
         const resp = await requestUtils.get(apiURLs.selfUser, () => setIsLoggedIn(false))
         setUser(await resp.json())
-    }, [])
+    })
+
+    generalUtils.useEffectAsync(async () => {
+        if (isSelf)
+            return
+        const resp = await requestUtils.get(apiURLs.hasPendingRequest(userId), () => setIsLoggedIn(false))
+        setHasPendingFriendRequest(await resp.json())
+    })
 
     if (!isLoggedIn)
         return <Navigate to={appPaths.login}/>

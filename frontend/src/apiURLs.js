@@ -23,6 +23,9 @@ class ApiUrls {
     friendRequest(id){
         return `${this.friendRequestList}${id}`
     }
+    hasPendingRequest(targetUserId){
+        return `${this.friendRequestList}has-pending-request/${targetUserId}/`
+    }
 }
 
 const apiURLs = new ApiUrls()

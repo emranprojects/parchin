@@ -1,8 +1,11 @@
 from django.db import IntegrityError
 from django.db.models import Q
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from main.models.friend_request import FriendRequest
 from main.serializers.friend_request_serializers import FriendRequestSerializer
@@ -23,3 +26,9 @@ class FriendRequestViewSet(viewsets.ModelViewSet):
         except IntegrityError as e:
             if integrity_error_utils.get_error_type(e) == IntegrityErrorType.UNIQUE_CONSTRAINT:
                 raise ValidationError("درخواست دوستی قبلا ارسال شده است!")
+
+    @action(['GET'], detail=False, url_path=r"has-pending-request/(?P<target_id>\w+)")
+    def active_friend_request_exists(self, request: Request, target_id, *args, **kwargs):
+        active_friend_request_exists = FriendRequest.objects.filter(requester=request.user) \
+            .filter(target_id=target_id).exists()
+        return Response(active_friend_request_exists)
