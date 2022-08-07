@@ -6,12 +6,14 @@ from main.models.user import User
 
 
 class SelfUserAPITest(TestCase):
+    API_URL = "/api/self-user/"
+
     def setUp(self) -> None:
         self.user = User.objects.create(phone_number='+989121234567')
         self.client.force_login(self.user)
 
     def test_can_update_name(self):
-        resp: Response = self.client.put("/api/users/self/", {
+        resp: Response = self.client.put(self.API_URL, {
             "first_name": "emran"
         }, content_type="application/json")
         self.assertEqual(resp.status_code, HTTP_200_OK, resp.content)
@@ -19,13 +21,13 @@ class SelfUserAPITest(TestCase):
         self.assertEqual(self.user.first_name, "emran")
 
     def test_cant_update_phone_number(self):
-        self.client.put("/api/users/self/", {
+        self.client.put(self.API_URL, {
             "phone_number": "+989359876543"
         }, content_type="application/json")
         self.user.refresh_from_db()
         self.assertEqual(self.user.phone_number, "+989121234567")
 
     def test_can_delete_self(self):
-        self.client.delete("/api/users/self/")
+        self.client.delete(self.API_URL)
         with self.assertRaises(User.DoesNotExist):
             self.user.refresh_from_db()
