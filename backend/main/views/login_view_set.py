@@ -42,5 +42,5 @@ class LoginViewSet(viewsets.ViewSet):
                                                               # Django users should have unique usernames
                                                               username=serializer.data['phone_number'])
         token, _ = Token.objects.get_or_create(user=user)
-        return Response({"token": token.key, "id": smart_str(user.pk)},
+        return Response({"token": token.key, "id": user.pk},
                         status=HTTP_201_CREATED if user_newly_created else HTTP_200_OK)
