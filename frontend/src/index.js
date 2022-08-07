@@ -18,6 +18,7 @@ import appPaths from "./appPaths";
 import LandingPage from "./pages/LandingPage";
 import UserProfile from "./pages/UserProfile";
 import UserSearch from "./pages/UserSearch";
+import Drawer from "./components/Drawer"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,9 +30,11 @@ root.render(
 
 function Root() {
     const [isLoggedIn, setIsLoggedIn] = useState(loginUtils.isLoggedIn())
+    const [drawerVisible, setDrawerVisible] = useState(false)
 
     return <LoginContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
-        <Navbar/>
+        <Navbar setDrawerVisibleFunc={setDrawerVisible}/>
+        <Drawer visible={drawerVisible} onHide={() => setDrawerVisible(false)}/>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LandingPage/>}/>
