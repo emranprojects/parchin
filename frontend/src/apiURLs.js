@@ -32,6 +32,9 @@ class ApiUrls {
     friendRequestReject(id){
         return `${this.friendRequest(id)}reject/`
     }
+    friendsList(userId){
+        return `${this.BASE_URL}/friends/?user_id=${userId}`
+    }
 }
 
 const apiURLs = new ApiUrls()

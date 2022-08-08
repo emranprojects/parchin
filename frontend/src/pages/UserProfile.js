@@ -32,17 +32,7 @@ export default function () {
         dealerName: "عمران",
         dealerImageUrl: "https://quera.org/media/CACHE/images/public/careers/quotes/narrator/a5bcbbf298624df4991db9334ed4f571/7c9bc808882105cb8cd3f1e11387eaff.jpg",
     }])
-    const [friends, setFriends] = useState([
-        {
-            id: "1",
-            name: "محمد معصومی‌اصل",
-            imageUrl: "https://imagefa.ir/wp-content/uploads/2020/05/%D8%B9%DA%A9%D8%B3-%D9%BE%D8%B1%D9%88%D9%81%D8%A7%DB%8C%D9%84-%D9%BE%D8%B3%D8%B1%D9%88%D9%86%D9%87-%D8%A8%D8%AF%D9%88%D9%86-%D9%85%D8%AA%D9%86-%D8%B9%DA%A9%D8%B3-%D9%BE%D8%B3%D8%B1%D9%88%D9%86%D9%87-%D8%AE%D8%A7%D8%B5-39.jpg",
-        },
-        {
-            id: "2",
-            name: "رضا طهورایی",
-            imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpF8Q9z6WXEfk5i1EISZSKm5GDFtsgu6ya-Q&usqp=CAU",
-        }])
+    const [friends, setFriends] = useState([])
 
 
     generalUtils.useEffectAsync(async () => {
@@ -56,6 +46,11 @@ export default function () {
         const resp = await requestUtils.get(apiURLs.friendRequestPreviewList, () => setIsLoggedIn(false))
         const friendReqs = await resp.json()
         setHasPendingFriendRequest(friendReqs.some(r => r.target.toString() === userId))
+    })
+
+    generalUtils.useEffectAsync(async () => {
+        const resp = await requestUtils.get(apiURLs.friendsList(userId))
+        setFriends(await resp.json())
     })
 
     if (!isLoggedIn)

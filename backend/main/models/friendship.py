@@ -21,6 +21,8 @@ class Friendship(models.Model):
 
     @staticmethod
     def are_friends(left_id, right_id) -> bool:
+        if left_id == right_id:
+            return True
         id1 = min(int(left_id), int(right_id))
         id2 = max(int(left_id), int(right_id))
         return Friendship.objects.filter(user1_id=id1, user2_id=id2).exists()
