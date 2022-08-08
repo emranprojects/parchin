@@ -14,6 +14,7 @@ import githubIcon from "../static-media/github-logo-32.png"
 import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch"
 import {faUsers} from "@fortawesome/free-solid-svg-icons/faUsers"
 import Row from "react-bootstrap/Row"
+import apiUtils from "../utils/apiUtils"
 
 export default function ({visible: visibleProp, onHide = () => undefined}) {
     const [visible, setVisible] = useState(visibleProp)
@@ -39,14 +40,7 @@ export default function ({visible: visibleProp, onHide = () => undefined}) {
     })
 
     generalUtils.useEffectAsync(async () => {
-        if (!isLoggedIn)
-            return
-        const resp = await requestUtils.get(apiURLs.friendRequestPreviewList, () => setIsLoggedIn(false))
-        if (resp.ok) {
-            const allReqs = await resp.json()
-            const incomingReqs = allReqs.filter(r => r.target === loginUtils.getID())
-            setIncomingFriendRequestsCount(incomingReqs.length)
-        }
+        setIncomingFriendRequestsCount(await apiUtils.getIncomingFriendRequestsCount())
     })
 
 

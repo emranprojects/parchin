@@ -15,7 +15,7 @@ class ApiUrls {
         return `${this.BASE_URL}/users/`
     }
     user(id) {
-        return `${this.usersList}${id}`
+        return `${this.usersList}${id}/`
     }
     get friendRequestList(){
         return `${this.BASE_URL}/friend-request/`
@@ -24,7 +24,13 @@ class ApiUrls {
         return `${this.friendRequestList}previews/`
     }
     friendRequest(id){
-        return `${this.friendRequestList}${id}`
+        return `${this.friendRequestList}${id}/`
+    }
+    friendRequestAccept(id){
+        return `${this.friendRequest(id)}accept/`
+    }
+    friendRequestReject(id){
+        return `${this.friendRequest(id)}reject/`
     }
 }
 

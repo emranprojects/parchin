@@ -3,8 +3,8 @@ import UserCard from "./UserCard"
 
 export default function ({
                              users,
-                             btnText = "", onBtnClicked = (e) => undefined,
-                             btn2Text = "", onBtn2Clicked = (e) => undefined,
+                             btnText = "", onBtnClicked = (user) => undefined,
+                             btn2Text = "", onBtn2Clicked = (user) => undefined,
                          }) {
     return users.map(u =>
         <Col xl={2} lg={3} md={4} xs={6} key={u.id}>

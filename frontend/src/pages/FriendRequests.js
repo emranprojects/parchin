@@ -7,6 +7,7 @@ import requestUtils from "../utils/requestUtils"
 import apiURLs from "../apiURLs"
 import loginUtils from "../utils/loginUtils"
 import CenteredRow from "../components/CenteredRow"
+import {toast} from "react-toastify"
 
 export default function () {
     const [incomingFriendRequests, setIncomingFriendRequests] = useState([])
@@ -16,8 +17,24 @@ export default function () {
         const allReqs = await resp.json()
         setIncomingFriendRequests(allReqs
             .filter(r => r.target.id === loginUtils.getID())
-            .map(r => r.requester))
+            .map(r => ({friendRequestId: r.id, ...r.requester})))
     })
+
+    async function onAcceptFriendRequest(user) {
+        const resp = await requestUtils.post(apiURLs.friendRequestAccept(user.friendRequestId), {})
+        if (resp.ok) {
+            toast.success("دوستی پذیرفته شد!")
+            setIncomingFriendRequests(reqs => reqs.filter(r => r.friendRequestId !== user.friendRequestId))
+        }
+    }
+
+    async function onRejectFriendRequest(user) {
+        const resp = await requestUtils.post(apiURLs.friendRequestReject(user.friendRequestId), {})
+        if (resp.ok) {
+            toast.success("درخواست حذف شد.")
+            setIncomingFriendRequests(reqs => reqs.filter(r => r.friendRequestId !== user.friendRequestId))
+        }
+    }
 
     return (
         <Container>
@@ -29,12 +46,14 @@ export default function () {
                     <Row>
                         <UsersList users={incomingFriendRequests}
                                    btnText="پذیرش"
+                                   onBtnClicked={onAcceptFriendRequest}
                                    btn2Text="رد"
+                                   onBtn2Clicked={onRejectFriendRequest}
                         />
                     </Row>
                 ) :
                 <CenteredRow>
-                    <h5 className="text-muted">درخواست جدیدی نیامده است :(</h5>
+                    <h5 className="text-muted">درخواستی یافت نشد :(</h5>
                 </CenteredRow>
             }
         </Container>
