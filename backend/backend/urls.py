@@ -21,10 +21,11 @@ from main.views.friend_request_view import FriendRequestViewSet
 from main.views.friends_view_set import FriendsViewSet
 from main.views.login_view_set import LoginViewSet
 from main.views.self_user_view_set import SelfUserViewSet
+from main.views.user_view_set import UserViewSet
 
 router = DefaultRouter()
 router.register(r'', SelfUserViewSet, basename="self-user")
-router.register(r'users', SelfUserViewSet, basename="users")
+router.register(r'users', UserViewSet, basename="users")
 router.register(r'login', LoginViewSet, basename="login")
 router.register(r'friend-request', FriendRequestViewSet, basename="friend-request")
 router.register(r'friends', FriendsViewSet, basename="friends")

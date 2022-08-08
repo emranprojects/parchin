@@ -36,7 +36,7 @@ export default function () {
 
 
     generalUtils.useEffectAsync(async () => {
-        const resp = await requestUtils.get(apiURLs.selfUser, () => setIsLoggedIn(false))
+        const resp = await requestUtils.get(isSelf ? apiURLs.selfUser : apiURLs.user(userId), () => setIsLoggedIn(false))
         setUser(await resp.json())
     })
 
