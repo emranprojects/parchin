@@ -10,11 +10,12 @@ import apiURLs from "../apiURLs"
 import {toast} from "react-toastify"
 import loginUtils from "../utils/loginUtils"
 import appPaths from "../appPaths"
+import defaultProfilePic from "../static-media/default-profile-pic.png"
 
 export default function () {
     const {userId} = useParams()
     const [isLoggedIn, setIsLoggedIn] = useState(loginUtils.isLoggedIn())
-    const isSelf = ["self", loginUtils.getID()].includes(userId)
+    const isSelf = ["self", loginUtils.getID().toString()].includes(userId)
     const [user, setUser] = useState({
         id: "",
         first_name: "",
@@ -76,7 +77,7 @@ export default function () {
                 <Col lg={2} xs={6}>
                     <img style={{width: "100%", height: "auto"}}
                          className="rounded-1"
-                         src="https://quera.org/media/CACHE/images/public/careers/quotes/narrator/a5bcbbf298624df4991db9334ed4f571/7c9bc808882105cb8cd3f1e11387eaff.jpg"/>
+                         src={defaultProfilePic}/>
                 </Col>
                 <Col>
                     <Row><h4>{user.first_name} {user.last_name}</h4></Row>
@@ -97,7 +98,7 @@ export default function () {
             </Row>
             <h3>دوستان</h3>
             <Row className="mb-5">
-                <UsersList users={friends} btnText="درخواست دوستی"/>
+                <UsersList users={friends}/>
             </Row>
             <h3>پست‌ها</h3>
             <Row>
