@@ -25,6 +25,7 @@ export default function ({visible: visibleProp, onHide = () => undefined}) {
     function logout(loginContext) {
         loginUtils.logout()
         loginContext.setIsLoggedIn(false)
+        setIsLoggedIn(false)
     }
 
     useEffect(() => {
@@ -47,7 +48,9 @@ export default function ({visible: visibleProp, onHide = () => undefined}) {
     return (
         <LoginContext.Consumer>
             {loginContext =>
-                <Offcanvas show={visible} onHide={onHide} placement="end">
+                <Offcanvas show={visible} onHide={onHide}
+                           onShow={() => setIsLoggedIn(loginUtils.isLoggedIn())}
+                           placement="end">
                     <Offcanvas.Header closeButton={true}>
                         <Offcanvas.Title><h4>پرچین</h4></Offcanvas.Title>
                     </Offcanvas.Header>
