@@ -25,7 +25,7 @@ class RequestUtils {
                         toast.error(<>{errors}</>)
                         break
                     case 401:
-                        toast.error("لاگین نیستید!", {toastId:"Not logged in"})
+                        toast.error("لاگین نیستید!", {toastId: "Not logged in"})
                         onError401()
                         break
                     default:
@@ -35,7 +35,7 @@ class RequestUtils {
             }
             return resp
         } catch (e) {
-            toast.error("عدم ارتباط با سرور!")
+            toast.error("عدم ارتباط با سرور!", {toastId: "No server connection"})
             console.log(e)
             return {
                 status: -1,
