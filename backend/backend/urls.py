@@ -26,9 +26,9 @@ from main.views.user_view_set import UserViewSet
 router = DefaultRouter()
 router.register(r'', SelfUserViewSet, basename="self-user")
 router.register(r'users', UserViewSet, basename="users")
+router.register(r'users/(?P<user_id>.*)/friends', FriendsViewSet, basename="friends")
 router.register(r'login', LoginViewSet, basename="login")
 router.register(r'friend-request', FriendRequestViewSet, basename="friend-request")
-router.register(r'friends', FriendsViewSet, basename="friends")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

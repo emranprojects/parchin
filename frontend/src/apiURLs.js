@@ -33,7 +33,7 @@ class ApiUrls {
         return `${this.friendRequest(id)}reject/`
     }
     friendsList(userId){
-        return `${this.BASE_URL}/friends/?user_id=${userId}`
+        return `${this.user(userId)}friends/`
     }
 }
 

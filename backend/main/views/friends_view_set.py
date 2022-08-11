@@ -1,21 +1,21 @@
-from django.db.models import Q
+from rest_framework import mixins
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import GenericViewSet
 
 from main.models import User
 from main.models.friendship import Friendship
 from main.serializers.user_serializers import UserSerializer
 
 
-class FriendsViewSet(ReadOnlyModelViewSet):
+class FriendsViewSet(GenericViewSet, mixins.ListModelMixin):
     SELF_USER_ID = "self"
 
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user_id = self.request.query_params['user_id']
+        user_id = self.kwargs['user_id']
         if user_id == self.SELF_USER_ID:
             user_id = self.request.user.id
         elif not Friendship.are_friends(self.request.user.id, user_id):
