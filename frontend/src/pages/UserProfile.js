@@ -100,32 +100,34 @@ export default function () {
                     <Row><h4>{user.first_name} {user.last_name}</h4></Row>
                     <Row><span>{friends.length} دوست</span></Row>
                     <Row><span>{posts.length} پست</span></Row>
-                    {isSelf || isFriend ? "" :
-                        <Row className="mt-3">
-                            <Col>
+                    <Row className="mt-3">
+                        <Col>
+                            {isSelf || isFriend ? "" :
                                 <abbr title={hasPendingFriendRequest ? "درخواست قبلا ارسال شده است" : ""}>
                                     <Button onClick={friendRequestBtnClicked}
                                             disabled={hasPendingFriendRequest}>درخواست دوستی</Button>
                                 </abbr>
-                            </Col>
-                        </Row>
-                    }
-                    {isFriend &&
-                    <Row className="mt-3">
-                        <Col>
+                            }
+                            {isFriend &&
                             <Button variant="outline-danger" className="shadow-none"
                                     onClick={unfriendBtnClicked}
                                     disabled={hasPendingFriendRequest}>حذف دوستی</Button>
+                            }
                         </Col>
                     </Row>
-                    }
                 </Col>
             </Row>
             <h3>دوستان</h3>
+            {isSelf &&
+            <a className="mb-2 btn btn-outline-primary" href={appPaths.friendRequests}>مشاهده درخواست‌های دوستی</a>
+            }
             <Row className="mb-5">
                 <UsersList users={friends}/>
             </Row>
             <h3>پست‌ها</h3>
+            {isSelf &&
+            <a className="mb-2 btn btn-outline-primary" href={appPaths.newPost}>ایجاد پست جدید</a>
+            }
             <Row>
                 <ProductsList posts={posts}/>
             </Row>
