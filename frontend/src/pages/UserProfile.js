@@ -1,7 +1,7 @@
 import {Col, Container, Row} from "react-bootstrap"
 import ProductsList from "../components/PostsList"
 import {Navigate, useParams} from "react-router-dom"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import Button from "react-bootstrap/Button"
 import UsersList from "../components/UsersList"
 import generalUtils from "../utils/generalUtils"
@@ -23,6 +23,7 @@ export default function () {
         phone_number: "",
     })
     const [hasPendingFriendRequest, setHasPendingFriendRequest] = useState(false)
+    const [isFriend, setIsFriend] = useState(false)
     const [posts, setPosts] = useState([{
         id: "1",
         imageUrl: "https://www.tedyshop.com/wp-content/uploads/2019/07/%D8%AE%D8%B1%DB%8C%D8%AF-%D8%AE%D8%B1%D8%B3-%D8%B9%D8%B1%D9%88%D8%B3%DA%A9%DB%8C-1.jpg",
@@ -34,7 +35,6 @@ export default function () {
         dealerImageUrl: "https://quera.org/media/CACHE/images/public/careers/quotes/narrator/a5bcbbf298624df4991db9334ed4f571/7c9bc808882105cb8cd3f1e11387eaff.jpg",
     }])
     const [friends, setFriends] = useState([])
-
 
     generalUtils.useEffectAsync(async () => {
         const resp = await requestUtils.get(isSelf ? apiURLs.selfUser : apiURLs.user(userId), () => setIsLoggedIn(false))
@@ -51,8 +51,14 @@ export default function () {
 
     generalUtils.useEffectAsync(async () => {
         const resp = await requestUtils.get(apiURLs.friendsList(userId))
-        setFriends(await resp.json())
+        const _friends = await resp.json()
+        setFriends(_friends)
     })
+
+    useEffect(() => {
+        setIsFriend(friends.some(f => f.id === loginUtils.getID()))
+    }, [friends])
+
 
     if (!isLoggedIn)
         return <Navigate to={appPaths.login}/>
@@ -70,6 +76,17 @@ export default function () {
         }
     }
 
+    async function unfriendBtnClicked(e) {
+        const confirmed = window.confirm("آیا از حذف دوستی اطمینان دارید؟")
+        if (!confirmed)
+            return
+        const resp = await requestUtils.post(apiURLs.removeFriend(userId))
+        if (resp.ok) {
+            toast.success("دوستی حذف شد!")
+            setFriends(friends => friends.filter(f => f.id !== loginUtils.getID()))
+        }
+    }
+
     return (
         <Container>
             <Row className="mb-5"/>
@@ -83,16 +100,24 @@ export default function () {
                     <Row><h4>{user.first_name} {user.last_name}</h4></Row>
                     <Row><span>{friends.length} دوست</span></Row>
                     <Row><span>{posts.length} پست</span></Row>
-                    {isSelf ? "" :
+                    {isSelf || isFriend ? "" :
                         <Row className="mt-3">
                             <Col>
                                 <abbr title={hasPendingFriendRequest ? "درخواست قبلا ارسال شده است" : ""}>
-                                <Button className="btn"
-                                        onClick={friendRequestBtnClicked}
-                                        disabled={hasPendingFriendRequest}>درخواست دوستی</Button>
+                                    <Button onClick={friendRequestBtnClicked}
+                                            disabled={hasPendingFriendRequest}>درخواست دوستی</Button>
                                 </abbr>
                             </Col>
                         </Row>
+                    }
+                    {isFriend &&
+                    <Row className="mt-3">
+                        <Col>
+                            <Button variant="outline-danger" className="shadow-none"
+                                    onClick={unfriendBtnClicked}
+                                    disabled={hasPendingFriendRequest}>حذف دوستی</Button>
+                        </Col>
+                    </Row>
                     }
                 </Col>
             </Row>

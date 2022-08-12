@@ -35,6 +35,9 @@ class ApiUrls {
     friendsList(userId){
         return `${this.user(userId)}friends/`
     }
+    removeFriend(friendUserId){
+        return `${this.friendsList("self")}${friendUserId}/remove/`
+    }
 }
 
 const apiURLs = new ApiUrls()
